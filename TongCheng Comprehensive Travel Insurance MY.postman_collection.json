@@ -17,7 +17,8 @@
 							"pm.environment.set('quote_package_id', jsonData.id);",
 							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
 							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);", 
-							"pm.environment.set('quote_3_id', jsonData.quotes['2'].id);"
+							"pm.environment.set('quote_3_id', jsonData.quotes['2'].id);",
+							"pm.environment.set('quote_10_id', jsonData.quotes['2'].id);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -116,7 +117,8 @@
 							"pm.environment.set('quote_package_id', jsonData.id);",
 							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
 							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);", 
-							"pm.environment.set('quote_4_id', jsonData.quotes['2'].id);"
+							"pm.environment.set('quote_4_id', jsonData.quotes['2'].id);",
+							"pm.environment.set('quote_11_id', jsonData.quotes['2'].id);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -215,7 +217,8 @@
 							"pm.environment.set('quote_package_id', jsonData.id);",
 							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
 							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);", 
-							"pm.environment.set('quote_5_id', jsonData.quotes['2'].id);"
+							"pm.environment.set('quote_5_id', jsonData.quotes['2'].id);",
+							"pm.environment.set('quote_12_id', jsonData.quotes['2'].id);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -314,7 +317,8 @@
 							"pm.environment.set('quote_package_id', jsonData.id);",
 							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
 							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);",
-							"pm.environment.set('quote_6_id', jsonData.quotes['2'].id);"
+							"pm.environment.set('quote_6_id', jsonData.quotes['2'].id);",
+							"pm.environment.set('quote_13_id', jsonData.quotes['2'].id);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -414,7 +418,8 @@
 							"pm.environment.set('quote_package_id', jsonData.id);",
 							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
 							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);", 
-							"pm.environment.set('quote_7_id', jsonData.quotes['2'].id);"
+							"pm.environment.set('quote_7_id', jsonData.quotes['2'].id);",
+							"pm.environment.set('quote_14_id', jsonData.quotes['2'].id);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -517,6 +522,7 @@
 							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
 							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);",
 							"pm.environment.set('quote_8_id', jsonData.quotes['2'].id);",
+							"pm.environment.set('quote_15_id', jsonData.quotes['2'].id);",
 							"",
 							"",
 							"pm.test(\"Status code is 201\", function() {",
