@@ -1,0 +1,2049 @@
+{
+	"info": {
+		"_postman_id": "98235e14-e337-45f1-82be-a6985305e8ea",
+		"name": "TongCheng Comprehensive Travel Insurance MY",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29371193"
+	},
+	"item": [
+		{
+			"name": "1.0 Quote Sample: 1 way (Domestic)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set('quote_package_id', jsonData.id);",
+							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
+							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');",
+							"",
+							"let outboundLegStart = moment().add(2, 'days').set({ hour: 2, minute: 25, second: 0, millisecond: 0});",
+							"let outboundLegEnd = moment().add(2, 'days').set({ hour: 11, minute: 30, second: 0, millisecond: 0});",
+							"let transitOWaitStart = moment().add(2, 'days').set({ hour: 4, minute: 25, second: 0, millisecond: 0});",
+							"let transitOWaitEnd = moment().add(2, 'days').set({ hour: 5, minute: 30, second: 0, millisecond: 0});",
+							"",
+							"let returnLegStart = moment().add(2 + 14, 'days').set({ hour: 1, minute: 20, second: 0, millisecond: 0});",
+							"let returnLegEnd = moment().add(2 + 14, 'days').set({ hour: 12, minute: 45, second: 0, millisecond: 0});",
+							"let transitRWaitStart = moment().add(2 + 14, 'days').set({ hour: 3, minute: 25, second: 0, millisecond: 0});",
+							"let transitRWaitEnd = moment().add(2 + 14, 'days').set({ hour: 4, minute: 30, second: 0, millisecond: 0});",
+							"",
+							"",
+							"pm.environment.set(\"outboundLegStart\", outboundLegStart.format());",
+							"pm.environment.set(\"outboundLegEnd\", outboundLegEnd.format());",
+							"pm.environment.set(\"returnLegStart\", returnLegStart.format());",
+							"pm.environment.set(\"returnLegEnd\", returnLegEnd.format());",
+							"",
+							"",
+							"pm.environment.set(\"transitOWaitStart\", transitOWaitStart.format());",
+							"pm.environment.set(\"transitOWaitEnd\", transitOWaitEnd.format());",
+							"pm.environment.set(\"transitRWaitStart\", transitRWaitStart.format());",
+							"pm.environment.set(\"transitRWaitEnd\", transitRWaitEnd.format());",
+							"",
+							"",
+							"pm.environment.set('transactionDate', moment().format())",
+							"pm.environment.set('policy_end_date', moment().add(10, 'days').set({ hour: 12, minute: 20, second: 0, millisecond: 0}).format());",
+							"",
+							"// set `reservation number`",
+							"pm.environment.set(\"reservation_number\", require(\"uuid\").v4());",
+							"",
+							"console.log(pm.environment.get('policy_end_date'));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{testing_api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Region",
+						"value": "ap-southeast-2",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    //  \"partner_customer_id\": \"CUSTOMER ID\", //unique customer idenfier\n    //  \"partner_transaction_id\": \"ORDER ID\", //transaction reference in Extranet, unique value not blank. You can update when QUOTE or BOOK\n    \"currency\": \"MYR\",\n    \"customer_country\": \"MY\", //MY(policy locale), SG, PH, AU, NZ\n    \"customer_language\": \"en\",\n    \"request\": [\n        {\n            \"policy_type\": \"comprehensive_travel_insurance\",\n            \"policy_type_version\": \"29\",\n            \"policy_start_date\": \"{{outboundLegStart}}\",\n            \"policy_end_date\": \"{{returnLegEnd}}\",\n            \"trip_start_date\": \"{{outboundLegStart}}\",\n            \"trip_end_date\": \"{{returnLegEnd}}\",\n            \"departure_country\": \"MY\",\n            \"destination_country\": \"MY\",\n            \"reservation_number\": \"{{reservation_number}}\",\n            \"number_of_adults\": 1,\n            \"number_of_children\": 1,\n            \"number_of_infants\": 1,\n            \"total_tickets_price\": 472.00,\n            \"is_return\": false,\n            \"flights\": [\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{outboundLegStart}}\",\n                            \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                            \"flight_number\": \"SK1520\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"KUL\",\n                            \"arrival_airport\": \"JHB\",\n                            \"departure_country\": \"MY\",\n                            \"arrival_country\": \"MY\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{outboundLegStart}}\",\n                    \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                    \"departure_country\": \"MY\",\n                    \"arrival_country\": \"MY\",\n                    \"departure_city\": \"KUL\",\n                    \"arrival_city\": \"JHB\"\n                }\n            ]\n        },\n        {\n            \"policy_type\": \"travel_personal_baggage\",\n            \"policy_type_version\": \"7\",\n            \"policy_start_date\": \"{{outboundLegStart}}\",\n            \"policy_end_date\": \"{{returnLegEnd}}\",\n            \"trip_start_date\": \"{{outboundLegStart}}\",\n            \"trip_end_date\": \"{{returnLegEnd}}\",\n            \"departure_country\": \"MY\",\n            \"destination_country\": \"MY\",\n            \"reservation_number\": \"{{reservation_number}}\",\n            \"number_of_adults\": 1,\n            \"number_of_children\": 1,\n            \"number_of_infants\": 1,\n            \"total_tickets_price\": 472.00,\n            \"is_return\": false,\n            \"flights\": [\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{outboundLegStart}}\",\n                            \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                            \"flight_number\": \"SK1520\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"KUL\",\n                            \"arrival_airport\": \"JHB\",\n                            \"departure_country\": \"MY\",\n                            \"arrival_country\": \"MY\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{outboundLegStart}}\",\n                    \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                    \"departure_country\": \"MY\",\n                    \"arrival_country\": \"MY\",\n                    \"departure_city\": \"KUL\",\n                    \"arrival_city\": \"JHB\"\n                }\n            ]\n        }\n    ]\n}"
+				},
+				"url": "{{url}}/partners/{{partner_code}}/quotes/",
+				"description": "Travel Delay Cover"
+			},
+			"response": []
+		},
+		{
+			"name": "1.1 Quote Sample: 1 way (International)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set('quote_package_id', jsonData.id);",
+							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
+							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');",
+							"",
+							"let outboundLegStart = moment().add(2, 'days').set({ hour: 2, minute: 25, second: 0, millisecond: 0});",
+							"let outboundLegEnd = moment().add(2, 'days').set({ hour: 11, minute: 30, second: 0, millisecond: 0});",
+							"let transitOWaitStart = moment().add(2, 'days').set({ hour: 4, minute: 25, second: 0, millisecond: 0});",
+							"let transitOWaitEnd = moment().add(2, 'days').set({ hour: 5, minute: 30, second: 0, millisecond: 0});",
+							"",
+							"let returnLegStart = moment().add(2 + 14, 'days').set({ hour: 1, minute: 20, second: 0, millisecond: 0});",
+							"let returnLegEnd = moment().add(2 + 14, 'days').set({ hour: 12, minute: 45, second: 0, millisecond: 0});",
+							"let transitRWaitStart = moment().add(2 + 14, 'days').set({ hour: 3, minute: 25, second: 0, millisecond: 0});",
+							"let transitRWaitEnd = moment().add(2 + 14, 'days').set({ hour: 4, minute: 30, second: 0, millisecond: 0});",
+							"",
+							"",
+							"pm.environment.set(\"outboundLegStart\", outboundLegStart.format());",
+							"pm.environment.set(\"outboundLegEnd\", outboundLegEnd.format());",
+							"pm.environment.set(\"returnLegStart\", returnLegStart.format());",
+							"pm.environment.set(\"returnLegEnd\", returnLegEnd.format());",
+							"",
+							"",
+							"pm.environment.set(\"transitOWaitStart\", transitOWaitStart.format());",
+							"pm.environment.set(\"transitOWaitEnd\", transitOWaitEnd.format());",
+							"pm.environment.set(\"transitRWaitStart\", transitRWaitStart.format());",
+							"pm.environment.set(\"transitRWaitEnd\", transitRWaitEnd.format());",
+							"",
+							"",
+							"pm.environment.set('transactionDate', moment().format())",
+							"pm.environment.set('policy_end_date', moment().add(10, 'days').set({ hour: 12, minute: 20, second: 0, millisecond: 0}).format());",
+							"",
+							"// set `reservation number`",
+							"pm.environment.set(\"reservation_number\", require(\"uuid\").v4());",
+							"",
+							"console.log(pm.environment.get('policy_end_date'));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{testing_api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Region",
+						"value": "ap-southeast-2",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    //  \"partner_customer_id\": \"CUSTOMER ID\", //unique customer idenfier\n    //  \"partner_transaction_id\": \"ORDER ID\", //transaction reference in Extranet, unique value not blank. You can update when QUOTE or BOOK\n    \"currency\": \"MYR\",\n    \"customer_country\": \"MY\",\n    \"customer_language\": \"en\",\n    \"request\": [\n        {\n            \"policy_type\": \"comprehensive_travel_insurance\",\n            \"policy_type_version\": \"29\",\n            \"policy_start_date\": \"{{outboundLegStart}}\",\n            \"policy_end_date\": \"{{returnLegEnd}}\",\n            \"trip_start_date\": \"{{outboundLegStart}}\",\n            \"trip_end_date\": \"{{returnLegEnd}}\",\n            \"departure_country\": \"MY\",\n            \"destination_country\": \"FR\",\n            \"reservation_number\": \"{{reservation_number}}\",\n            \"number_of_adults\": 1,\n            \"number_of_children\": 1,\n            \"number_of_infants\": 1,\n            \"total_tickets_price\": 12472.00,\n            \"is_return\": false,\n            \"flights\": [\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{outboundLegStart}}\",\n                            \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                            \"flight_number\": \"SK1530\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"KUL\",\n                            \"arrival_airport\": \"CDG\",\n                            \"departure_country\": \"MY\",\n                            \"arrival_country\": \"FR\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{outboundLegStart}}\",\n                    \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                    \"departure_country\": \"MY\",\n                    \"arrival_country\": \"FR\",\n                    \"departure_city\": \"KUL\",\n                    \"arrival_city\": \"PAR\"\n                }\n            ]\n        },\n        {\n            \"policy_type\": \"travel_personal_baggage\",\n            \"policy_type_version\": \"7\",\n            \"policy_start_date\": \"{{outboundLegStart}}\",\n            \"policy_end_date\": \"{{returnLegEnd}}\",\n            \"trip_start_date\": \"{{outboundLegStart}}\",\n            \"trip_end_date\": \"{{returnLegEnd}}\",\n            \"departure_country\": \"MY\",\n            \"destination_country\": \"FR\",\n            \"reservation_number\": \"{{reservation_number}}\",\n            \"number_of_adults\": 3,\n            \"number_of_children\": 0,\n            \"number_of_infants\": 0,\n            \"total_tickets_price\": 12472.00,\n            \"is_return\": false,\n            \"flights\": [\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{outboundLegStart}}\",\n                            \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                            \"flight_number\": \"SK1530\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"KUL\",\n                            \"arrival_airport\": \"CDG\",\n                            \"departure_country\": \"MY\",\n                            \"arrival_country\": \"FR\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{outboundLegStart}}\",\n                    \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                    \"departure_country\": \"MY\",\n                    \"arrival_country\": \"FR\",\n                    \"departure_city\": \"KUL\",\n                    \"arrival_city\": \"PAR\"\n                }\n            ]\n        }\n    ]\n}"
+				},
+				"url": "{{url}}/partners/{{partner_code}}/quotes/",
+				"description": "Travel Delay Cover"
+			},
+			"response": []
+		},
+		{
+			"name": "1.2 Quote Sample: 1 way (with Transit)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set('quote_package_id', jsonData.id);",
+							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
+							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');",
+							"",
+							"let outboundLegStart = moment().add(2, 'days').set({ hour: 2, minute: 25, second: 0, millisecond: 0});",
+							"let outboundLegEnd = moment().add(2, 'days').set({ hour: 11, minute: 30, second: 0, millisecond: 0});",
+							"let transitOWaitStart = moment().add(2, 'days').set({ hour: 4, minute: 25, second: 0, millisecond: 0});",
+							"let transitOWaitEnd = moment().add(2, 'days').set({ hour: 5, minute: 30, second: 0, millisecond: 0});",
+							"",
+							"let returnLegStart = moment().add(2 + 14, 'days').set({ hour: 1, minute: 20, second: 0, millisecond: 0});",
+							"let returnLegEnd = moment().add(2 + 14, 'days').set({ hour: 12, minute: 45, second: 0, millisecond: 0});",
+							"let transitRWaitStart = moment().add(2 + 14, 'days').set({ hour: 3, minute: 25, second: 0, millisecond: 0});",
+							"let transitRWaitEnd = moment().add(2 + 14, 'days').set({ hour: 4, minute: 30, second: 0, millisecond: 0});",
+							"",
+							"",
+							"pm.environment.set(\"outboundLegStart\", outboundLegStart.format());",
+							"pm.environment.set(\"outboundLegEnd\", outboundLegEnd.format());",
+							"pm.environment.set(\"returnLegStart\", returnLegStart.format());",
+							"pm.environment.set(\"returnLegEnd\", returnLegEnd.format());",
+							"",
+							"",
+							"pm.environment.set(\"transitOWaitStart\", transitOWaitStart.format());",
+							"pm.environment.set(\"transitOWaitEnd\", transitOWaitEnd.format());",
+							"pm.environment.set(\"transitRWaitStart\", transitRWaitStart.format());",
+							"pm.environment.set(\"transitRWaitEnd\", transitRWaitEnd.format());",
+							"",
+							"",
+							"pm.environment.set('transactionDate', moment().format())",
+							"pm.environment.set('policy_end_date', moment().add(10, 'days').set({ hour: 12, minute: 20, second: 0, millisecond: 0}).format());",
+							"",
+							"// set `reservation number`",
+							"pm.environment.set(\"reservation_number\", require(\"uuid\").v4());",
+							"",
+							"console.log(pm.environment.get('policy_end_date'));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{testing_api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Region",
+						"value": "ap-southeast-2",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    //  \"partner_customer_id\": \"CUSTOMER ID\", //unique customer idenfier\n    //  \"partner_transaction_id\": \"ORDER ID\", //transaction reference in Extranet, unique value not blank. You can update when QUOTE or BOOK\n    \"currency\": \"MYR\",\n    \"customer_country\": \"MY\",\n    \"customer_language\": \"en\",\n    \"request\": [\n        {\n            \"policy_type\": \"comprehensive_travel_insurance\",\n            \"policy_type_version\": \"29\",\n            \"policy_start_date\": \"{{outboundLegStart}}\",\n            \"policy_end_date\": \"{{returnLegEnd}}\",\n            \"trip_start_date\": \"{{outboundLegStart}}\",\n            \"trip_end_date\": \"{{returnLegEnd}}\",\n            \"departure_country\": \"MY\",\n            \"destination_country\": \"FR\",\n            \"reservation_number\": \"{{reservation_number}}\",\n            \"number_of_adults\": 1,\n            \"number_of_children\": 1,\n            \"number_of_infants\": 1,\n            \"total_tickets_price\": 2672.00,\n            \"is_return\": false,\n            \"flights\": [\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{outboundLegStart}}\",\n                            \"arrival_datetime\": \"{{transitOWaitStart}}\",\n                            \"flight_number\": \"SK1530\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"KUL\",\n                            \"arrival_airport\": \"DXB\",\n                            \"departure_country\": \"MY\",\n                            \"arrival_country\": \"AE\"\n                        },\n                        {\n                            \"departure_datetime\": \"{{transitOWaitEnd}}\",\n                            \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                            \"flight_number\": \"SK1540\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"DXB\",\n                            \"arrival_airport\": \"CDG\",\n                            \"departure_country\": \"AE\",\n                            \"arrival_country\": \"FR\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{outboundLegStart}}\",\n                    \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                    \"departure_country\": \"MY\",\n                    \"arrival_country\": \"FR\",\n                    \"departure_city\": \"KUL\",\n                    \"arrival_city\": \"PAR\"\n                }\n            ]\n        },\n        {\n            \"policy_type\": \"travel_personal_baggage\",\n            \"policy_type_version\": \"7\",\n            \"policy_start_date\": \"{{outboundLegStart}}\",\n            \"policy_end_date\": \"{{returnLegEnd}}\",\n            \"trip_start_date\": \"{{outboundLegStart}}\",\n            \"trip_end_date\": \"{{returnLegEnd}}\",\n            \"departure_country\": \"MY\",\n            \"destination_country\": \"FR\",\n            \"reservation_number\": \"{{reservation_number}}\",\n            \"number_of_adults\": 1,\n            \"number_of_children\": 1,\n            \"number_of_infants\": 1,\n            \"total_tickets_price\": 2672.00,\n            \"is_return\": false,\n            \"flights\": [\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{outboundLegStart}}\",\n                            \"arrival_datetime\": \"{{transitOWaitStart}}\",\n                            \"flight_number\": \"SK1530\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"KUL\",\n                            \"arrival_airport\": \"DXB\",\n                            \"departure_country\": \"MY\",\n                            \"arrival_country\": \"AE\"\n                        },\n                        {\n                            \"departure_datetime\": \"{{transitOWaitEnd}}\",\n                            \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                            \"flight_number\": \"SK1540\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"DXB\",\n                            \"arrival_airport\": \"CDG\",\n                            \"departure_country\": \"AE\",\n                            \"arrival_country\": \"FR\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{outboundLegStart}}\",\n                    \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                    \"departure_country\": \"MY\",\n                    \"arrival_country\": \"FR\",\n                    \"departure_city\": \"KUL\",\n                    \"arrival_city\": \"PAR\"\n                }\n            ]\n        }\n    ]\n}"
+				},
+				"url": "{{url}}/partners/{{partner_code}}/quotes/",
+				"description": "Travel Delay Cover"
+			},
+			"response": []
+		},
+		{
+			"name": "1.3 Quote Sample: 2 ways",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set('quote_package_id', jsonData.id);",
+							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
+							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');",
+							"",
+							"let outboundLegStart = moment().add(2, 'days').set({ hour: 2, minute: 25, second: 0, millisecond: 0});",
+							"let outboundLegEnd = moment().add(2, 'days').set({ hour: 11, minute: 30, second: 0, millisecond: 0});",
+							"let transitOWaitStart = moment().add(2, 'days').set({ hour: 4, minute: 25, second: 0, millisecond: 0});",
+							"let transitOWaitEnd = moment().add(2, 'days').set({ hour: 5, minute: 30, second: 0, millisecond: 0});",
+							"",
+							"let returnLegStart = moment().add(2 + 14, 'days').set({ hour: 1, minute: 20, second: 0, millisecond: 0});",
+							"let returnLegEnd = moment().add(2 + 14, 'days').set({ hour: 12, minute: 45, second: 0, millisecond: 0});",
+							"let transitRWaitStart = moment().add(2 + 14, 'days').set({ hour: 3, minute: 25, second: 0, millisecond: 0});",
+							"let transitRWaitEnd = moment().add(2 + 14, 'days').set({ hour: 4, minute: 30, second: 0, millisecond: 0});",
+							"",
+							"",
+							"pm.environment.set(\"outboundLegStart\", outboundLegStart.format());",
+							"pm.environment.set(\"outboundLegEnd\", outboundLegEnd.format());",
+							"pm.environment.set(\"returnLegStart\", returnLegStart.format());",
+							"pm.environment.set(\"returnLegEnd\", returnLegEnd.format());",
+							"",
+							"",
+							"pm.environment.set(\"transitOWaitStart\", transitOWaitStart.format());",
+							"pm.environment.set(\"transitOWaitEnd\", transitOWaitEnd.format());",
+							"pm.environment.set(\"transitRWaitStart\", transitRWaitStart.format());",
+							"pm.environment.set(\"transitRWaitEnd\", transitRWaitEnd.format());",
+							"",
+							"",
+							"",
+							"pm.environment.set('transactionDate', moment().format())",
+							"pm.environment.set('policy_end_date', moment().add(10, 'days').set({ hour: 12, minute: 20, second: 0, millisecond: 0}).format());",
+							"",
+							"// set `reservation number`",
+							"pm.environment.set(\"reservation_number\", require(\"uuid\").v4());",
+							"",
+							"console.log(pm.environment.get('policy_end_date'));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{testing_api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Region",
+						"value": "ap-southeast-2",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    //  \"partner_customer_id\": \"CUSTOMER ID\", //unique customer idenfier\n    //  \"partner_transaction_id\": \"ORDER ID\", //transaction reference in Extranet, unique value not blank. You can update when QUOTE or BOOK\n    \"currency\": \"MYR\",\n    \"customer_country\": \"MY\",\n    \"customer_language\": \"en\",\n    \"request\": [\n        {\n            \"policy_type\": \"comprehensive_travel_insurance\",\n            \"policy_type_version\": \"29\",\n            \"policy_start_date\": \"{{outboundLegStart}}\",\n            \"policy_end_date\": \"{{returnLegEnd}}\",\n            \"trip_start_date\": \"{{outboundLegStart}}\",\n            \"trip_end_date\": \"{{returnLegEnd}}\",\n            \"departure_country\": \"MY\",\n            \"destination_country\": \"FR\",\n            \"reservation_number\": \"{{reservation_number}}\",\n            \"number_of_adults\": 1,\n            \"number_of_children\": 1,\n            \"number_of_infants\": 1,\n            \"total_tickets_price\": 6472.00,\n            \"is_return\": true,\n            \"flights\": [\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{outboundLegStart}}\",\n                            \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                            \"flight_number\": \"SK1530\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"KUL\",\n                            \"arrival_airport\": \"CDG\",\n                            \"departure_country\": \"MY\",\n                            \"arrival_country\": \"FR\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{outboundLegStart}}\",\n                    \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                    \"departure_country\": \"MY\",\n                    \"arrival_country\": \"FR\",\n                    \"departure_city\": \"KUL\",\n                    \"arrival_city\": \"PAR\"\n                },\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{returnLegStart}}\",\n                            \"arrival_datetime\": \"{{returnLegEnd}}\",\n                            \"flight_number\": \"SK1533\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"CDG\",\n                            \"arrival_airport\": \"KUL\",\n                            \"departure_country\": \"FR\",\n                            \"arrival_country\": \"MY\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{returnLegStart}}\",\n                    \"arrival_datetime\": \"{{returnLegEnd}}\",\n                    \"departure_country\": \"FR\",\n                    \"arrival_country\": \"MY\",\n                    \"departure_city\": \"PAR\",\n                    \"arrival_city\": \"KUL\"\n                }\n            ]\n        },\n        {\n            \"policy_type\": \"travel_personal_baggage\",\n            \"policy_type_version\": \"7\",\n            \"policy_start_date\": \"{{outboundLegStart}}\",\n            \"policy_end_date\": \"{{returnLegEnd}}\",\n            \"trip_start_date\": \"{{outboundLegStart}}\",\n            \"trip_end_date\": \"{{returnLegEnd}}\",\n            \"departure_country\": \"MY\",\n            \"destination_country\": \"FR\",\n            \"reservation_number\": \"{{reservation_number}}\",\n            \"number_of_adults\": 1,\n            \"number_of_children\": 1,\n            \"number_of_infants\": 1,\n            \"total_tickets_price\": 6472.00,\n            \"is_return\": true,\n            \"flights\": [\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{outboundLegStart}}\",\n                            \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                            \"flight_number\": \"SK1530\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"KUL\",\n                            \"arrival_airport\": \"CDG\",\n                            \"departure_country\": \"MY\",\n                            \"arrival_country\": \"FR\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{outboundLegStart}}\",\n                    \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                    \"departure_country\": \"MY\",\n                    \"arrival_country\": \"FR\",\n                    \"departure_city\": \"KUL\",\n                    \"arrival_city\": \"PAR\"\n                },\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{returnLegStart}}\",\n                            \"arrival_datetime\": \"{{returnLegEnd}}\",\n                            \"flight_number\": \"SK1533\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"CDG\",\n                            \"arrival_airport\": \"KUL\",\n                            \"departure_country\": \"FR\",\n                            \"arrival_country\": \"MY\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{returnLegStart}}\",\n                    \"arrival_datetime\": \"{{returnLegEnd}}\",\n                    \"departure_country\": \"FR\",\n                    \"arrival_country\": \"MY\",\n                    \"departure_city\": \"PAR\",\n                    \"arrival_city\": \"KUL\"\n                }\n            ]\n        }\n    ]\n}"
+				},
+				"url": "{{url}}/partners/{{partner_code}}/quotes/",
+				"description": "Travel Delay Cover"
+			},
+			"response": []
+		},
+		{
+			"name": "1.4 Quote Sample: 2 ways (with Transit)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set('quote_package_id', jsonData.id);",
+							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
+							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');",
+							"",
+							"let outboundLegStart = moment().add(2, 'days').set({ hour: 2, minute: 25, second: 0, millisecond: 0});",
+							"let outboundLegEnd = moment().add(2, 'days').set({ hour: 11, minute: 30, second: 0, millisecond: 0});",
+							"let transitOWaitStart = moment().add(2, 'days').set({ hour: 4, minute: 25, second: 0, millisecond: 0});",
+							"let transitOWaitEnd = moment().add(2, 'days').set({ hour: 5, minute: 30, second: 0, millisecond: 0});",
+							"",
+							"let returnLegStart = moment().add(2 + 14, 'days').set({ hour: 1, minute: 20, second: 0, millisecond: 0});",
+							"let returnLegEnd = moment().add(2 + 14, 'days').set({ hour: 12, minute: 45, second: 0, millisecond: 0});",
+							"let transitRWaitStart = moment().add(2 + 14, 'days').set({ hour: 3, minute: 25, second: 0, millisecond: 0});",
+							"let transitRWaitEnd = moment().add(2 + 14, 'days').set({ hour: 4, minute: 30, second: 0, millisecond: 0});",
+							"",
+							"",
+							"pm.environment.set(\"outboundLegStart\", outboundLegStart.format());",
+							"pm.environment.set(\"outboundLegEnd\", outboundLegEnd.format());",
+							"pm.environment.set(\"returnLegStart\", returnLegStart.format());",
+							"pm.environment.set(\"returnLegEnd\", returnLegEnd.format());",
+							"",
+							"",
+							"pm.environment.set(\"transitOWaitStart\", transitOWaitStart.format());",
+							"pm.environment.set(\"transitOWaitEnd\", transitOWaitEnd.format());",
+							"pm.environment.set(\"transitRWaitStart\", transitRWaitStart.format());",
+							"pm.environment.set(\"transitRWaitEnd\", transitRWaitEnd.format());",
+							"",
+							"",
+							"",
+							"pm.environment.set('transactionDate', moment().format())",
+							"pm.environment.set('policy_end_date', moment().add(10, 'days').set({ hour: 12, minute: 20, second: 0, millisecond: 0}).format());",
+							"",
+							"// set `reservation number`",
+							"pm.environment.set(\"reservation_number\", require(\"uuid\").v4());",
+							"",
+							"console.log(pm.environment.get('policy_end_date'));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{testing_api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Region",
+						"value": "ap-southeast-2",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    //  \"partner_customer_id\": \"CUSTOMER ID\", //unique customer idenfier\n    //  \"partner_transaction_id\": \"ORDER ID\", //transaction reference in Extranet, unique value not blank. You can update when QUOTE or BOOK\n    \"currency\": \"MYR\",\n    \"customer_country\": \"MY\",\n    \"customer_language\": \"en\",\n    \"request\": [\n        {\n            \"policy_type\": \"comprehensive_travel_insurance\",\n            \"policy_type_version\": \"29\",\n            \"policy_start_date\": \"{{outboundLegStart}}\",\n            \"policy_end_date\": \"{{returnLegEnd}}\",\n            \"trip_start_date\": \"{{outboundLegStart}}\",\n            \"trip_end_date\": \"{{returnLegEnd}}\",\n            \"departure_country\": \"MY\",\n            \"destination_country\": \"FR\",\n            \"reservation_number\": \"{{reservation_number}}\",\n            \"number_of_adults\": 1,\n            \"number_of_children\": 1,\n            \"number_of_infants\": 1,\n            \"total_tickets_price\": 5472.00,\n            \"is_return\": true,\n            \"flights\": [\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{outboundLegStart}}\",\n                            \"arrival_datetime\": \"{{transitOWaitStart}}\",\n                            \"flight_number\": \"SK1530\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"KUL\",\n                            \"arrival_airport\": \"DXB\",\n                            \"departure_country\": \"MY\",\n                            \"arrival_country\": \"AE\"\n                        },\n                        {\n                            \"departure_datetime\": \"{{transitOWaitEnd}}\",\n                            \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                            \"flight_number\": \"SK1540\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"DXB\",\n                            \"arrival_airport\": \"CDG\",\n                            \"departure_country\": \"AE\",\n                            \"arrival_country\": \"FR\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{outboundLegStart}}\",\n                    \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                    \"departure_country\": \"MY\",\n                    \"arrival_country\": \"FR\",\n                    \"departure_city\": \"KUL\",\n                    \"arrival_city\": \"PAR\"\n                },\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{returnLegStart}}\",\n                            \"arrival_datetime\": \"{{transitOWaitStart}}\",\n                            \"flight_number\": \"SK1553\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"CDG\",\n                            \"arrival_airport\": \"DXB\",\n                            \"departure_country\": \"FR\",\n                            \"arrival_country\": \"AE\"\n                        },\n                        {\n                            \"departure_datetime\": \"{{transitOWaitEnd}}\",\n                            \"arrival_datetime\": \"{{returnLegEnd}}\",\n                            \"flight_number\": \"SK1560\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"DXB\",\n                            \"arrival_airport\": \"KUL\",\n                            \"departure_country\": \"AE\",\n                            \"arrival_country\": \"MY\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{returnLegStart}}\",\n                    \"arrival_datetime\": \"{{returnLegEnd}}\",\n                    \"departure_country\": \"FR\",\n                    \"arrival_country\": \"MY\",\n                    \"departure_city\": \"PAR\",\n                    \"arrival_city\": \"KUL\"\n                }\n            ],\n            //insured [] is optional at Quote\n            \"insured\": [\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"One\",\n                    \"birth_date\": \"1980-01-21\",\n                    \"email\": \"user.one@covergenius.com\",\n                    \"metadata\": {\n                        \"gender\": \"male\"        //male, female\n                    }\n                },\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"Two\",\n                    \"birth_date\": \"2014-03-21\",\n                    \"email\": \"user.two@covergenius.com\",\n                    \"metadata\": {\n                        \"gender\": \"male\"        //male, female\n                    }\n                },\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"Three\",\n                    \"birth_date\": \"2023-11-21\",\n                    \"email\": \"user.three@covergenius.com\",\n                    \"metadata\": {\n                        \"gender\": \"male\"        //male, female\n                    }\n                }\n            ]\n        },\n        {\n            \"policy_type\": \"travel_personal_baggage\",\n            \"policy_type_version\": \"7\",\n            \"policy_start_date\": \"{{outboundLegStart}}\",\n            \"policy_end_date\": \"{{returnLegEnd}}\",\n            \"trip_start_date\": \"{{outboundLegStart}}\",\n            \"trip_end_date\": \"{{returnLegEnd}}\",\n            \"departure_country\": \"MY\",\n            \"destination_country\": \"FR\",\n            \"reservation_number\": \"{{reservation_number}}\",\n            \"number_of_adults\": 1,\n            \"number_of_children\": 1,\n            \"number_of_infants\": 1,\n            \"total_tickets_price\": 5472.00,\n            \"is_return\": true,\n            \"flights\": [\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{outboundLegStart}}\",\n                            \"arrival_datetime\": \"{{transitOWaitStart}}\",\n                            \"flight_number\": \"SK1530\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"KUL\",\n                            \"arrival_airport\": \"DXB\",\n                            \"departure_country\": \"MY\",\n                            \"arrival_country\": \"AE\"\n                        },\n                        {\n                            \"departure_datetime\": \"{{transitOWaitEnd}}\",\n                            \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                            \"flight_number\": \"SK1540\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"DXB\",\n                            \"arrival_airport\": \"CDG\",\n                            \"departure_country\": \"AE\",\n                            \"arrival_country\": \"FR\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{outboundLegStart}}\",\n                    \"arrival_datetime\": \"{{outboundLegEnd}}\",\n                    \"departure_country\": \"MY\",\n                    \"arrival_country\": \"FR\",\n                    \"departure_city\": \"KUL\",\n                    \"arrival_city\": \"PAR\"\n                },\n                {\n                    \"legs\": [\n                        {\n                            \"departure_datetime\": \"{{returnLegStart}}\",\n                            \"arrival_datetime\": \"{{transitOWaitStart}}\",\n                            \"flight_number\": \"SK1553\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"CDG\",\n                            \"arrival_airport\": \"DXB\",\n                            \"departure_country\": \"FR\",\n                            \"arrival_country\": \"AE\"\n                        },\n                        {\n                            \"departure_datetime\": \"{{transitOWaitEnd}}\",\n                            \"arrival_datetime\": \"{{returnLegEnd}}\",\n                            \"flight_number\": \"SK1560\",\n                            \"marketing_airline_iata_code\": \"SK\",\n                            \"marketing_airline_icao_code\": \"SAS\",\n                            \"operating_airline_iata_code\": \"SK\",\n                            \"operating_airline_icao_code\": \"SAS\",\n                            \"departure_airport\": \"DXB\",\n                            \"arrival_airport\": \"KUL\",\n                            \"departure_country\": \"AE\",\n                            \"arrival_country\": \"MY\"\n                        }\n                    ],\n                    \"departure_datetime\": \"{{returnLegStart}}\",\n                    \"arrival_datetime\": \"{{returnLegEnd}}\",\n                    \"departure_country\": \"FR\",\n                    \"arrival_country\": \"MY\",\n                    \"departure_city\": \"PAR\",\n                    \"arrival_city\": \"KUL\"\n                }\n            ],\n            //insured [] is optional at Quote\n            \"insured\": [\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"One\",\n                    \"birth_date\": \"1980-01-21\",\n                    \"email\": \"user.one@covergenius.com\",\n                    \"metadata\": {\n                        \"gender\": \"male\"        //male, female\n                    }\n                },\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"Two\",\n                    \"birth_date\": \"2014-03-21\",\n                    \"email\": \"user.two@covergenius.com\",\n                    \"metadata\": {\n                        \"gender\": \"male\"        //male, female\n                    }\n                },\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"Three\",\n                    \"birth_date\": \"2023-11-21\",\n                    \"email\": \"user.three@covergenius.com\",\n                    \"metadata\": {\n                        \"gender\": \"male\"        //male, female\n                    }\n                }\n            ]\n        }\n    ]\n}"
+				},
+				"url": "{{url}}/partners/{{partner_code}}/quotes/",
+				"description": "Travel Delay Cover"
+			},
+			"response": []
+		},
+		{
+			"name": "2.0 Booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(pm.response.code >= 400) ? console.log(responseBody): {};",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set('quote_package_id', jsonData.id);",
+							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
+							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);",
+							"",
+							"",
+							"pm.test(\"Status code is 201\", function() {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test('Status is Received', function() {",
+							"    pm.expect(jsonData.quotes['0'].status).to.eql(\"RECEIVED\");",
+							"    pm.expect(jsonData.status).to.eql(\"RECEIVED\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{testing_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quotes\": [\n        {\n            \"id\": \"{{quote_1_id}}\",\n            \"insured\": [\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"One\",\n                    \"birth_date\": \"1980-01-21\",\n                    //\"age\": 45,\n                    \"email\": \"user.one@covergenius.com\", //optional field\n                    \"metadata\": {\n                        \"gender\": \"male\" //male, female\n                    }\n                },\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"Two\",\n                    \"birth_date\": \"2014-03-21\",\n                    //\"age\": 10,\n                    \"email\": \"user.two@covergenius.com\", //optional field\n                    \"metadata\": {\n                        \"gender\": \"male\" //male, female\n                    }\n                },\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"Three\",\n                    \"birth_date\": \"2023-11-21\",\n                    //\"age\": 1,\n                    \"email\": \"user.three@covergenius.com\", //optional field\n                    \"metadata\": {\n                        \"gender\": \"male\" //male, female\n                    }\n                }\n            ]\n        },\n        {\n            \"id\": \"{{quote_2_id}}\",\n            \"insured\": [\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"One\",\n                    \"birth_date\": \"1980-01-21\",\n                    //\"age\": 45,\n                    \"email\": \"user.one@covergenius.com\", //optional field\n                    \"metadata\": {\n                        \"gender\": \"male\" //male, female\n                    }\n                },\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"Two\",\n                    \"birth_date\": \"2014-03-21\",\n                    //\"age\": 10,\n                    \"email\": \"user.two@covergenius.com\", //optional field\n                    \"metadata\": {\n                        \"gender\": \"male\" //male, female\n                    }\n                },\n                {\n                    \"first_name\": \"User\",\n                    \"last_name\": \"Three\",\n                    \"birth_date\": \"2023-11-21\",\n                    //\"age\": 1,\n                    \"email\": \"user.three@covergenius.com\", //optional field\n                    \"metadata\": {\n                        \"gender\": \"male\" //male, female\n                    }\n                }\n            ]\n        }\n    ],\n    \"policyholder\": {\n        \"first_name\": \"Mohammad\",\n        \"last_name\": \"Hussein\",\n        \"email\": \"qiujie.huang@ly.com\",\n        \"country\": \"MY\", //need to match MY(policy locale)\n        \"birth_date\": \"1990-03-03\", //optional field\n        \"address1\": \"10 Jalan Sedalang\", //optional field\n        \"region\": \"Selayang\", //optional field\n        \"city\": \"Kuala Lumpur\", //optional field\n        \"postcode\": \"35200\", //optional field\n        \"phone\": \"+61289786745\" //optional field\n    }\n}"
+				},
+				"url": "{{url}}/partners/{{partner_code}}/bookings/{{quote_package_id}}/",
+				"description": "Travel Delay Cover"
+			},
+			"response": []
+		},
+		{
+			"name": "3.1 Quote for Booking Update",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// set `reservation number`\r",
+							"pm.environment.set(\"reservation_number\", require(\"uuid\").v4());\r",
+							"\r",
+							"// set `destination_country`\r",
+							"pm.environment.set(\"destination_country\", 'AU');\r",
+							"\r",
+							"// set a random (valid) customer country\r",
+							"let valid_countries = [\r",
+							"\"ZA\", \"SG\", \"HK\", \"KR\", \"PH\", \"AE\", \"SA\", \"IN\", \"IR\", \r",
+							"\"MY\", \"NG\", \"RU\", \"KZ\", \"BH\", \"BY\", \"EG\", \"JO\", \"KW\", \r",
+							"\"OM\", \"QA\", \"CN\", \"JP\", \"MO\", \"TW\", \"TR\", \"IL\", \r",
+							"\"TH\", \"UA\", \"ID\", \"VN\", \"MX\", \"CL\", \"AR\", \"CO\", \"EC\", \r",
+							"\"PE\", \"PY\", \"UY\", \"VE\", \"BO\"\r",
+							"];\r",
+							"// valid_countries = [\"DE\"];\r",
+							"let randomCountry = valid_countries[Math.floor(Math.random() * valid_countries.length)];\r",
+							"pm.environment.set(\"customer_country\", randomCountry);\r",
+							"\r",
+							"// set policy start|end dates\r",
+							"let startDate = new Date().advance('0 days');\r",
+							"let endDate = new Date().advance('10 days');\r",
+							"pm.environment.set(\"quote_startDate\", startDate);\r",
+							"pm.environment.set(\"policy_start_date\", startDate.toISOString());\r",
+							"pm.environment.set(\"policy_end_date\", endDate.toISOString());\r",
+							"\r",
+							"let tripStartDate = new Date().advance('2 days')\r",
+							"let tripEndDate = new Date().advance('10 days');\r",
+							"\r",
+							"pm.environment.set(\"trip_start_date\", tripStartDate.toISOString());\r",
+							"pm.environment.set(\"trip_end_date\", tripEndDate.toISOString());\r",
+							"\r",
+							"// set `duration`\r",
+							"let duration = Math.ceil((endDate - startDate) / 999 / 60 / 60 / 24);\r",
+							"pm.environment.set(\"duration\", duration);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"////// print error first",
+							"(pm.response.code >= 400) ? console.log(responseBody): {};",
+							"",
+							"// set variables",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set('reference', jsonData.id);",
+							"pm.environment.set('quote_package_id', jsonData.id);",
+							"pm.environment.set('quote_1_id', jsonData.quotes['0'].id);",
+							"pm.environment.set('quote_2_id', jsonData.quotes['1'].id);",
+							"pm.environment.set(\"quote_update_id\", jsonData.update_id);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quotes\": [\n        {\n            \"id\": \"{{quote_1_id}}\",\n            \"update_fields\": {\n                //\"is_return\": false\n                //\"total_tickets_price\": 10000\n                \"policy_start_date\": \"2024-10-23T02:25:00+11:00\",\n                \"policy_end_date\": \"2024-11-07T02:25:00+11:00\"\n                //\"trip_start_date\": \"2024-10-23T02:25:00+11:00\", \n                //\"trip_end_date\": \"2024-11-07T02:25:00+11:00\"\n            }\n        },\n        {\n            \"id\": \"{{quote_2_id}}\",\n            \"update_fields\": {\n                //\"is_return\": false\n                //\"total_tickets_price\": 10000\n                \"policy_start_date\": \"2024-10-23T02:25:00+11:00\",\n                \"policy_end_date\": \"2024-11-07T02:25:00+11:00\"\n                //\"trip_start_date\": \"2024-10-23T02:25:00+11:00\", \n                //\"trip_end_date\": \"2024-11-07T02:25:00+11:00\"\n            }\n        }\n    ]\n}"
+				},
+				"url": "{{url}}/partners/{{partner_code}}/bookings/{{quote_package_id}}/quote_for_update"
+			},
+			"response": []
+		},
+		{
+			"name": "3.2 Booking confirm update",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "{{url}}/partners/{{partner_code}}/bookings/{{quote_package_id}}/confirm_update/{{quote_update_id}}/"
+			},
+			"response": []
+		},
+		{
+			"name": "3.3 Instant Update",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quotes\": [\n        {\n            \"id\": \"{{quote_1_id}}\",\n            \"update_fields\": {\n                //\"is_return\": false\n                //\"total_tickets_price\": 10000\n                \"policy_start_date\": \"2024-11-23T02:25:00+11:00\",\n                \"policy_end_date\": \"2024-12-07T02:25:00+11:00\"\n                //\"trip_start_date\": \"2024-10-23T02:25:00+11:00\", \n                //\"trip_end_date\": \"2024-11-07T02:25:00+11:00\"\n            }\n        },\n        {\n            \"id\": \"{{quote_2_id}}\",\n            \"update_fields\": {\n                //\"is_return\": false\n                //\"total_tickets_price\": 10000\n                \"policy_start_date\": \"2024-11-23T02:25:00+11:00\",\n                \"policy_end_date\": \"2024-12-07T02:25:00+11:00\"\n                //\"trip_start_date\": \"2024-10-23T02:25:00+11:00\", \n                //\"trip_end_date\": \"2024-11-07T02:25:00+11:00\"\n            }\n        }\n    ]\n}"
+				},
+				"url": "{{url}}/partners/{{partner_code}}/bookings/{{quote_package_id}}/"
+			},
+			"response": []
+		},
+		{
+			"name": "4.1 Preview Cancellation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"cancellation_id\", jsonData.cancellation_id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"preview\": true,\n    \"quotes\": [\n        {\n            \"id\": \"{{quote_1_id}}\",\n            \"reason_for_cancellation\": \"Cancel flight ticket\"\n        },\n        {\n            \"id\": \"{{quote_2_id}}\",\n            \"reason_for_cancellation\": \"Cancel flight ticket\"\n        }\n    ]\n}"
+				},
+				"url": "{{url}}/partners/{{partner_code}}/bookings/{{quote_package_id}}/cancel",
+				"description": "Does not instantly cancel the booking, allows client to preview amount to be refunded. Check Tests tab to see how to record cancellation ID."
+			},
+			"response": []
+		},
+		{
+			"name": "4.2 Confirm Cancellation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "{{url}}/partners/{{partner_code}}/bookings/{{quote_package_id}}/confirm_cancellation/{{cancellation_id}}/",
+				"description": "Confirms a cancellation that was created via Cancel Preview."
+			},
+			"response": []
+		},
+		{
+			"name": "4.3 Instant Cancellation",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{testing_api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"quotes\": [\n        {\n            \"id\": \"{{quote_1_id}}\",\n            \"reason_for_cancellation\": \"Cancel flight ticket\"\n        },\n        {\n            \"id\": \"{{quote_2_id}}\",\n            \"reason_for_cancellation\": \"Cancel flight ticket\"\n        }\n    ]\n}"
+				},
+				"url": "{{url}}/partners/{{partner_code}}/bookings/{{quote_package_id}}/cancel",
+				"description": "Travel Delay Cover"
+			},
+			"response": []
+		},
+		{
+			"name": "5.0 Opt-out",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"name": "Content-Type",
+						"type": "text"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Region",
+						"value": "ap-southeast-2",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "{{url}}/partners/{{partner_code}}/bookings/{{quote_package_id}}/opt_out"
+			},
+			"response": []
+		},
+		{
+			"name": "6.0 Get Booking",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{api_key}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "{{url}}/partners/{{partner_code}}/bookings/{{quote_package_id}}/"
+			},
+			"response": []
+		},
+		{
+			"name": "7.0 List Bookings",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const moment = require('moment');",
+							"",
+							"let createdBefore = moment();",
+							"let createdAfter = moment().subtract(30, 'days').set({ hour: 0, minute: 0, second: 0, millisecond: 0});",
+							"let updatedBefore = moment();",
+							"let updatedAfter = moment().subtract(30, 'days').set({ hour: 0, minute: 0, second: 0, millisecond: 0});",
+							"",
+							"pm.environment.set(\"createdBefore\", encodeURIComponent(createdBefore.format()));",
+							"pm.environment.set(\"createdAfter\", encodeURIComponent(createdAfter.format()));",
+							"pm.environment.set(\"updatedBefore\", encodeURIComponent(updatedBefore.format()));",
+							"pm.environment.set(\"updatedAfter\", encodeURIComponent(updatedAfter.format()));",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Api-Key",
+						"value": "{{api_key}}",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{authHeader}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"name": "Content-Type",
+						"type": "text"
+					},
+					{
+						"key": "Date",
+						"value": "{{date}}",
+						"type": "text"
+					},
+					{
+						"key": "X-Region",
+						"value": "ap-southeast-2",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/partners/{{partner_code}}/bookings/?created_before={{createdBefore}}&createdAfter={{createdAfter}}&updatedBefore={{updatedBefore}}&updatedAfter={{updatedAfter}}&limit=10&offset=0",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"partners",
+						"{{partner_code}}",
+						"bookings",
+						""
+					],
+					"query": [
+						{
+							"key": "created_before",
+							"value": "{{createdBefore}}"
+						},
+						{
+							"key": "createdAfter",
+							"value": "{{createdAfter}}"
+						},
+						{
+							"key": "updatedBefore",
+							"value": "{{updatedBefore}}"
+						},
+						{
+							"key": "updatedAfter",
+							"value": "{{updatedAfter}}"
+						},
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "offset",
+							"value": "0"
+						}
+					]
+				},
+				"description": "List all bookings, filter by before or after created / updated dates"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// auth",
+					"var sdk = require('postman-collection'),",
+					"    apiKey = environment.api_key,",
+					"    apiSecret = environment.api_secret,",
+					"    date = (new Date()).toUTCString(),",
+					"    // date = 'Thu, 14 Mar 2019 12:51:37 GMT',",
+					"    signatureContentString = 'date: ' + date,",
+					"    signatureString = CryptoJS.HmacSHA512(signatureContentString, apiSecret).toString(CryptoJS.enc.Base64),",
+					"    authHeader = 'Signature keyId=\"' + apiKey + '\",algorithm=\"hmac-sha512\",signature=\"' + encodeURIComponent(signatureString) + '\"';",
+					"",
+					"pm.environment.set(\"signatureString\", signatureString);",
+					"pm.environment.set(\"authHeader\", authHeader);",
+					"pm.environment.set(\"date\", date);",
+					"",
+					"",
+					"// set global variables",
+					"const rates = {",
+					"    30: [5.7, 1.43],",
+					"    45: [6, 1.5],",
+					"    60: [6.3, 1.58],",
+					"    90: [6.6, 1.65],",
+					"    120: [6.9, 1.73],",
+					"    9999: [8.1, 2.03]",
+					"};",
+					"pm.environment.set(\"rates\", rates);",
+					"",
+					"const policy = {",
+					"    \"cancellation\": {",
+					"        \"policy_type\": \"travel_flight_cancellation_cover\",",
+					"        \"policy_name\": \"Trip Cancellation\",",
+					"        \"policy_code\": \"TCAN01AS\",",
+					"        \"policy_content_title\": \"Trip Cancellation Cover\"",
+					"    },",
+					"    \"baggage\": {",
+					"        \"policy_type\": \"travel_personal_baggage\",",
+					"        \"policy_name\": \"Baggage & Personal Items\",",
+					"        \"policy_code\": \"TBAG01AS\",",
+					"        \"policy_content_title\": \"Baggage and Personal Items\"",
+					"    },",
+					"    \"electronics\": {",
+					"        \"policy_type\": \"travel_personal_electronics\",",
+					"        \"policy_name\": \"Personal Electronics\",",
+					"        \"policy_code\": \"TELE01AS\",",
+					"        \"policy_content_title\": \"Personal Electronics Cover\"",
+					"    },",
+					"    \"combined\": {",
+					"        \"policy_type\": \"travel_gadgets_items_cover\",",
+					"        \"policy_name\": \"Combined Personal Items, Electronics & Baggage\",",
+					"        \"policy_code\": \"TCOM01AS\",",
+					"        \"policy_content_title\": \"Combined Personal Items, Electronics & Baggage Cover\"",
+					"    },",
+					"    \"medical\": {",
+					"        \"policy_type\": \"travel_medical_cover\",",
+					"        \"policy_name\": \"Emergency Medical & Expenses Cover\",",
+					"        \"policy_code\": \"TMED01EG\",",
+					"        \"policy_content_title\": \"Emergency Medical & Expenses Cover\"",
+					"    },",
+					"    \"insolvency\": {",
+					"        \"policy_type\": \"insolvency_insurance\",",
+					"        \"policy_name\": \"Insolvency Protection Insurance\",",
+					"        \"policy_code\": \"IN@01ETR\",",
+					"        \"policy_content_title\": \"Insolvency Protection Insurance\"",
+					"    },",
+					"};",
+					"pm.environment.set(\"policy\", policy);",
+					"",
+					"// shemas definitions",
+					"const quoteSchema = {",
+					"    \"required\": [",
+					"        \"id\",",
+					"        \"status\",",
+					"        \"quotes\",",
+					"        \"currency\",",
+					"        \"total_price\",",
+					"        \"total_price_formatted\",",
+					"        \"created_at\",",
+					"        \"updated_at\",",
+					"        \"pds_url\",",
+					"        \"bundle_code\",",
+					"        \"bundle_price\",",
+					"        \"bundle_content\",",
+					"        \"bundle_price_formatted\",",
+					"        \"bundle_discount_percent\",",
+					"        \"bundle_discount_amount\",",
+					"        \"bundle_discount_amount_formatted\",",
+					"    ],",
+					"    \"properties\": {",
+					"        \"id\": {",
+					"            \"type\": \"string\",",
+					"            \"minLength\": 15,",
+					"            \"maxLength\": 15",
+					"        },",
+					"        \"status\": {",
+					"            \"type\": \"string\",",
+					"            \"enum\": [",
+					"                \"RECEIVED\"",
+					"            ]",
+					"        },",
+					"        \"currency\": {",
+					"            \"type\": \"string\",",
+					"            \"minLength\": 3,",
+					"            \"maxLength\": 3",
+					"        },",
+					"        \"total_price\": {",
+					"            \"type\": [\"number\"]",
+					"        },",
+					"        \"total_price_formatted\": {",
+					"            \"type\": \"string\"",
+					"        },",
+					"        \"pds_url\": {",
+					"            \"type\": \"string\",",
+					"            \"minLength\": 28",
+					"        },",
+					"        \"quotes\": {",
+					"            \"type\": \"object\",",
+					"            \"required\": [\"0\"],",
+					"            \"properties\": {",
+					"                \"0\": {",
+					"                    \"type\": \"object\",",
+					"                    \"required\": [",
+					"                        \"id\",",
+					"                        \"policy_start_date\",",
+					"                        \"status\",",
+					"                        \"price\",",
+					"                        \"price_formatted\",",
+					"                        \"policy\",",
+					"                        \"insured\",",
+					"                        \"tax\",",
+					"                        \"duration\",",
+					"                        \"benefits\",",
+					"                        \"commission\",",
+					"                        \"is_renewable\",",
+					"                        \"cover_amount\",",
+					"                        \"cover_amount_formatted\",",
+					"                        \"pending_renewal\",",
+					"                        \"discount_price\",",
+					"                        \"discount_price_formatted\",",
+					"                        \"discount_amount\",",
+					"                        \"discount_amount_formatted\"",
+					"                    ],",
+					"                    \"properties\": {",
+					"                        \"id\": {",
+					"                            \"type\": \"string\",",
+					"                            \"minLength\": 36,",
+					"                            \"maxLength\": 36,",
+					"                        },",
+					"                        \"policy_start_date\": {",
+					"                            \"type\": \"string\"",
+					"                        },",
+					"                        \"policy_end_date\": {",
+					"                            \"type\": [\"null\", \"string\"]",
+					"                        },",
+					"                        \"status\": {",
+					"                            \"type\": \"string\",",
+					"                            \"enum\": [",
+					"                                \"RECEIVED\"",
+					"                            ]",
+					"                        },",
+					"                        \"price_formatted\": {",
+					"                            \"type\": \"string\"",
+					"                        },",
+					"                        \"price\": {",
+					"                            \"type\": \"number\"",
+					"                        },",
+					"                        \"policy\": {",
+					"                            \"type\": \"object\",",
+					"                            \"required\": [",
+					"                                \"policy_type\",",
+					"                                \"policy_name\",",
+					"                                \"policy_code\",",
+					"                                \"policy_version\",",
+					"                                \"underwriter\",",
+					"                                \"content\"",
+					"                            ],",
+					"                            \"properties\": {",
+					"                                \"policy_type\": {",
+					"                                    \"type\": \"string\",",
+					"                                    \"minLength\": 1,",
+					"                                },",
+					"                                \"policy_name\": {",
+					"                                    \"type\": \"string\",",
+					"                                    \"minLength\": 1,",
+					"                                },",
+					"                                \"policy_version\": {",
+					"                                    \"type\": \"string\",",
+					"                                    \"minLength\": 36,",
+					"                                    \"maxLength\": 36",
+					"                                },",
+					"                                \"policy_code\": {",
+					"                                    \"type\": \"string\",",
+					"                                    \"pattern\": \"^[a-zA-Z0-9_-]{4,8}$\"",
+					"                                },",
+					"                                \"content\": {",
+					"                                    \"type\": \"object\",",
+					"                                    \"properties\": {",
+					"                                        \"title\": {",
+					"                                            \"type\": \"string\"",
+					"                                        },",
+					"                                        \"heqder\": {",
+					"                                            \"type\": \"string\"",
+					"                                        },",
+					"                                        \"description\": {",
+					"                                            \"type\": \"string\"",
+					"                                        },",
+					"                                        \"inclusions\": {",
+					"                                            \"type\": [\"null\", \"array\"],",
+					"                                            \"items\": {",
+					"                                                \"type\": \"object\"",
+					"                                            }",
+					"                                        },",
+					"                                        \"exclusions\": {",
+					"                                            \"type\": [\"null\", \"array\"],",
+					"                                            \"items\": {",
+					"                                                \"type\": \"object\"",
+					"                                            }",
+					"                                        }",
+					"                                    }",
+					"                                },",
+					"                                \"underwriter\": {",
+					"                                    \"type\": \"object\",",
+					"                                    \"required\": [",
+					"                                        \"disclaimer\"",
+					"                                    ],",
+					"                                    \"properties\": {",
+					"                                        \"disclaimer\": {",
+					"                                            \"type\": \"string\"",
+					"                                        }",
+					"                                    }",
+					"                                },",
+					"                            }",
+					"                        },",
+					"                        \"insured\": {",
+					"                            \"type\": [\"null\", \"array\"],",
+					"                            \"items\": {",
+					"                                \"type\": \"object\",",
+					"                                \"required\": [",
+					"                                    \"id\",",
+					"                                    \"region\"",
+					"                                ],",
+					"                                \"properties\": {",
+					"                                    \"id\": {",
+					"                                        \"type\": \"string\",",
+					"                                        \"minLength\": 36,",
+					"                                        \"maxLength\": 36,",
+					"                                    },",
+					"                                    \"region\": {",
+					"                                        \"type\": [\"string\", \"null\"]",
+					"                                    }",
+					"                                }",
+					"                            }",
+					"                        },",
+					"                        \"tax\": {",
+					"                            \"type\": \"object\",",
+					"                            \"required\": [",
+					"                                \"total_tax\",",
+					"                                \"total_amount_without_tax\",",
+					"                                \"total_tax_formatted\",",
+					"                                \"total_amount_without_tax_formatted\",",
+					"                                \"taxes\"",
+					"                            ],",
+					"                            \"properties\": {",
+					"                                \"total_tax\": {",
+					"                                    \"type\": \"number\"",
+					"                                },",
+					"                                \"total_amount_without_tax\": {",
+					"                                    \"type\": \"number\"",
+					"                                },",
+					"                                \"total_tax_formatted\": {",
+					"                                    \"type\": \"string\"",
+					"                                },",
+					"                                \"total_amount_without_tax_formatted\": {",
+					"                                    \"type\": \"string\"",
+					"                                },",
+					"                                \"taxes\": {",
+					"                                    \"type\": \"array\",",
+					"                                    \"items\": {",
+					"                                        \"type\": \"object\",",
+					"                                        \"required\": [",
+					"                                            \"tax_amount\",",
+					"                                            \"tax_code\",",
+					"                                            \"tax_amount_formatted\"",
+					"                                        ],",
+					"                                        \"properties\": {",
+					"                                            \"tax_amount\": {",
+					"                                                \"type\": \"number\"",
+					"                                            },",
+					"                                            \"tax_code\": {",
+					"                                                \"type\": \"string\",",
+					"                                                \"minLength\": 1,",
+					"                                            },",
+					"                                            \"tax_amount_formatted\": {",
+					"                                                \"type\": \"string\"",
+					"                                            }",
+					"                                        }",
+					"                                    }",
+					"                                }",
+					"                            }",
+					"                        },",
+					"                        \"duration\": {",
+					"                            \"type\": \"string\",",
+					"                            \"minLength\": 8,",
+					"                        },",
+					"                        \"benefits\": {",
+					"                            \"type\": [\"null\", \"array\"],",
+					"                            \"items\": {",
+					"                                \"type\": \"object\",",
+					"                                \"required\": [",
+					"                                    \"description\",",
+					"                                    \"limit\"",
+					"                                ],",
+					"                                \"properties\": {",
+					"                                    \"code\": {",
+					"                                        \"type\": \"string\"",
+					"                                    },",
+					"                                    \"description\": {",
+					"                                        \"type\": [\"string\", \"null\"]",
+					"                                    },",
+					"                                    \"limit\": {",
+					"                                        \"type\": [\"number\", \"null\"]",
+					"                                    },",
+					"                                    \"limit_formatted\": {",
+					"                                        \"type\": [\"string\", \"null\"]",
+					"                                    },",
+					"                                    \"excess\": {",
+					"                                        \"type\": [\"number\", \"null\"]",
+					"                                    },",
+					"                                }",
+					"                            }",
+					"                        },",
+					"                        \"commission\": {",
+					"                            \"type\": \"object\",",
+					"                            \"required\": [",
+					"                                \"total_commission\",",
+					"                                \"total_commission_formatted\"",
+					"                            ],",
+					"                            \"properties\": {",
+					"                                \"total_commission\": {",
+					"                                    \"type\": \"number\"",
+					"                                },",
+					"                                \"total_commission_formatted\": {",
+					"                                    \"type\": \"string\"",
+					"                                },",
+					"                            }",
+					"                        },",
+					"                        \"cover_amount\": {",
+					"                            \"type\": [\"number\", \"null\"]",
+					"                        },",
+					"                        \"cover_amount_formatted\": {",
+					"                            \"type\": [\"string\", \"null\"]",
+					"                        }",
+					"                    }",
+					"                }",
+					"            }",
+					"        },",
+					"        \"bundle_code\": {",
+					"            \"type\": [\"string\", \"null\"],",
+					"        },",
+					"        \"bundle_price\": {",
+					"            \"type\": \"number\",",
+					"        },",
+					"        \"bundle_content\": {",
+					"            \"type\": [\"object\", \"string\"],",
+					"        },",
+					"        \"bundle_price_formatted\": {",
+					"            \"type\": \"string\",",
+					"        },",
+					"        \"bundle_discount_percent\": {",
+					"            \"type\": \"number\",",
+					"        },",
+					"        \"bundle_discount_amount\": {",
+					"            \"type\": \"number\",",
+					"        },",
+					"        \"bundle_discount_amount_formatted\": {",
+					"            \"type\": \"string\",",
+					"        }",
+					"    }",
+					"};",
+					"",
+					"const quoteSchemaWithPagination = {",
+					"    \"required\": [",
+					"        \"results\"",
+					"    ],",
+					"    \"properties\": {",
+					"        \"results\": {",
+					"            \"type\": \"array\",",
+					"            \"items\": quoteSchema",
+					"        }",
+					"    }",
+					"};",
+					"",
+					"const bookingSchema = {",
+					"    \"required\": [",
+					"        \"id\",",
+					"        \"status\",",
+					"        \"quotes\",",
+					"        \"currency\",",
+					"        \"total_price\",",
+					"        \"total_price_formatted\",",
+					"        \"created_at\",",
+					"        \"updated_at\",",
+					"        \"pds_url\",",
+					"        \"coi\",",
+					"        \"policyholder\",",
+					"        \"total_tax\",",
+					"        \"total_tax_formatted\",",
+					"        \"total_premium\",",
+					"        \"total_premium_formatted\"",
+					"    ],",
+					"    \"properties\": {",
+					"        \"id\": {",
+					"            \"type\": \"string\",",
+					"            \"minLength\": 15,",
+					"            \"maxLength\": 15",
+					"        },",
+					"        \"status\": {",
+					"            \"type\": \"string\",",
+					"            \"enum\": [",
+					"                \"CONFIRMED\",",
+					"            ]",
+					"        },",
+					"        \"quotes\": {",
+					"            \"type\": \"array\",",
+					"            \"items\": {",
+					"                \"type\": \"object\",",
+					"                \"required\": [",
+					"                    \"id\",",
+					"                    \"policy_start_date\",",
+					"                    \"status\",",
+					"                    \"price\",",
+					"                    \"price_formatted\",",
+					"                    \"policy\",",
+					"                    \"insured\",",
+					"                    \"tax\",",
+					"                    \"duration\",",
+					"                    \"benefits\",",
+					"                    \"commission\",",
+					"                    \"is_renewable\",",
+					"                    \"cover_amount\",",
+					"                    \"cover_amount_formatted\",",
+					"                    \"pending_renewal\",",
+					"                    \"can_be_cancelled\"",
+					"                ],",
+					"                \"properties\": {",
+					"                    \"id\": {",
+					"                        \"type\": \"string\",",
+					"                        \"minLength\": 36,",
+					"                        \"maxLength\": 36,",
+					"                    },",
+					"                    \"policy_start_date\": {",
+					"                        \"type\": \"string\"",
+					"                    },",
+					"                    \"policy_end_date\": {",
+					"                        \"type\": [\"null\", \"string\"]",
+					"                    },",
+					"                    \"status\": {",
+					"                        \"type\": \"string\",",
+					"                        \"enum\": [",
+					"                            \"CONFIRMED\"",
+					"                        ]",
+					"                    },",
+					"                    \"price_formatted\": {",
+					"                        \"type\": \"string\"",
+					"                    },",
+					"                    \"price\": {",
+					"                        \"type\": \"number\"",
+					"                    },",
+					"                    \"policy\": {",
+					"                        \"type\": \"object\",",
+					"                        \"required\": [",
+					"                            \"policy_type\",",
+					"                            \"policy_name\",",
+					"                            \"policy_code\",",
+					"                            \"policy_version\",",
+					"                            \"underwriter\",",
+					"                            \"content\"",
+					"                        ],",
+					"                        \"properties\": {",
+					"                            \"policy_type\": {",
+					"                                \"type\": \"string\",",
+					"                                \"minLength\": 1,",
+					"                            },",
+					"                            \"policy_name\": {",
+					"                                \"type\": \"string\",",
+					"                                \"minLength\": 1,",
+					"                            },",
+					"                            \"policy_version\": {",
+					"                                \"type\": \"string\",",
+					"                                \"minLength\": 36,",
+					"                                \"maxLength\": 36",
+					"                            },",
+					"                            \"policy_code\": {",
+					"                                \"type\": \"string\",",
+					"                                \"pattern\": \"^[a-zA-Z0-9_-]{4,8}$\"",
+					"                            },",
+					"                            \"content\": {",
+					"                                \"type\": \"object\",",
+					"                                \"properties\": {",
+					"                                    \"title\": {",
+					"                                        \"type\": \"string\"",
+					"                                    },",
+					"                                    \"heqder\": {",
+					"                                        \"type\": \"string\"",
+					"                                    },",
+					"                                    \"description\": {",
+					"                                        \"type\": \"string\"",
+					"                                    },",
+					"                                    \"inclusions\": {",
+					"                                        \"type\": [\"null\", \"array\"],",
+					"                                        \"items\": {",
+					"                                            \"type\": \"object\"",
+					"                                        }",
+					"                                    },",
+					"                                    \"exclusions\": {",
+					"                                        \"type\": [\"null\", \"array\"],",
+					"                                        \"items\": {",
+					"                                            \"type\": \"object\"",
+					"                                        }",
+					"                                    }",
+					"                                }",
+					"                            },",
+					"                            \"underwriter\": {",
+					"                                \"type\": \"object\",",
+					"                                \"required\": [",
+					"                                    \"disclaimer\"",
+					"                                ],",
+					"                                \"properties\": {",
+					"                                    \"disclaimer\": {",
+					"                                        \"type\": \"string\"",
+					"                                    }",
+					"                                }",
+					"                            },",
+					"                        }",
+					"                    },",
+					"                    \"insured\": {",
+					"                        \"type\": [\"null\", \"array\"],",
+					"                        \"items\": {",
+					"                            \"type\": \"object\",",
+					"                            \"required\": [",
+					"                                \"id\",",
+					"                                \"region\"",
+					"                            ],",
+					"                            \"properties\": {",
+					"                                \"id\": {",
+					"                                    \"type\": \"string\",",
+					"                                    \"minLength\": 36,",
+					"                                    \"maxLength\": 36,",
+					"                                },",
+					"                                \"region\": {",
+					"                                    \"type\": [\"string\", \"null\"]",
+					"                                }",
+					"                            }",
+					"                        }",
+					"                    },",
+					"                    \"tax\": {",
+					"                        \"type\": \"object\",",
+					"                        \"required\": [",
+					"                            \"total_tax\",",
+					"                            \"total_amount_without_tax\",",
+					"                            \"total_tax_formatted\",",
+					"                            \"total_amount_without_tax_formatted\",",
+					"                            \"taxes\"",
+					"                        ],",
+					"                        \"properties\": {",
+					"                            \"total_tax\": {",
+					"                                \"type\": \"number\"",
+					"                            },",
+					"                            \"total_amount_without_tax\": {",
+					"                                \"type\": \"number\"",
+					"                            },",
+					"                            \"total_tax_formatted\": {",
+					"                                \"type\": \"string\"",
+					"                            },",
+					"                            \"total_amount_without_tax_formatted\": {",
+					"                                \"type\": \"string\"",
+					"                            },",
+					"                            \"taxes\": {",
+					"                                \"type\": [\"array\", \"null\"],",
+					"                                \"items\": {",
+					"                                    \"type\": \"object\",",
+					"                                    \"required\": [",
+					"                                        \"tax_amount\",",
+					"                                        \"tax_code\",",
+					"                                        \"tax_amount_formatted\"",
+					"                                    ],",
+					"                                    \"properties\": {",
+					"                                        \"tax_amount\": {",
+					"                                            \"type\": \"number\"",
+					"                                        },",
+					"                                        \"tax_code\": {",
+					"                                            \"type\": \"string\",",
+					"                                            \"minLength\": 1,",
+					"                                        },",
+					"                                        \"tax_amount_formatted\": {",
+					"                                            \"type\": \"string\"",
+					"                                        }",
+					"                                    }",
+					"                                }",
+					"                            }",
+					"                        }",
+					"                    },",
+					"                    \"duration\": {",
+					"                        \"type\": [\"string\", \"null\"]",
+					"                    },",
+					"                    \"benefits\": {",
+					"                        \"type\": [\"null\", \"array\"],",
+					"                        \"items\": {",
+					"                            \"type\": \"object\",",
+					"                            \"required\": [",
+					"                                \"description\",",
+					"                                \"limit\"",
+					"                            ],",
+					"                            \"properties\": {",
+					"                                \"code\": {",
+					"                                    \"type\": \"string\"",
+					"                                },",
+					"                                \"description\": {",
+					"                                    \"type\": [\"string\", \"null\"]",
+					"                                },",
+					"                                \"limit\": {",
+					"                                    \"type\": [\"number\", \"null\"]",
+					"                                },",
+					"                                \"limit_formatted\": {",
+					"                                    \"type\": [\"string\", \"null\"]",
+					"                                },",
+					"                                \"excess\": {",
+					"                                    \"type\": [\"number\", \"null\"]",
+					"                                },",
+					"                            }",
+					"                        }",
+					"                    },",
+					"                    \"commission\": {",
+					"                        \"type\": \"object\",",
+					"                        \"required\": [",
+					"                            \"total_commission\",",
+					"                            \"total_commission_formatted\"",
+					"                        ],",
+					"                        \"properties\": {",
+					"                            \"total_commission\": {",
+					"                                \"type\": \"number\"",
+					"                            },",
+					"                            \"total_commission_formatted\": {",
+					"                                \"type\": \"string\"",
+					"                            },",
+					"                        }",
+					"                    },",
+					"                    \"cover_amount\": {",
+					"                        \"type\": [\"number\", \"null\"]",
+					"                    },",
+					"                    \"cover_amount_formatted\": {",
+					"                        \"type\": [\"string\", \"null\"]",
+					"                    }",
+					"                }",
+					"            }",
+					"        },",
+					"        \"currency\": {",
+					"            \"type\": \"string\",",
+					"            \"minLength\": 3,",
+					"            \"maxLength\": 3",
+					"        },",
+					"        \"total_price\": {",
+					"            \"type\": \"number\"",
+					"        },",
+					"        \"total_price_formatted\": {",
+					"            \"type\": \"string\"",
+					"        },",
+					"        \"pds_url\": {",
+					"            \"type\": \"string\",",
+					"            \"minLength\": 28",
+					"        },",
+					"        \"coi\": {",
+					"            \"type\": \"object\",",
+					"            \"required\": [",
+					"                \"url\",",
+					"                \"pdf\"",
+					"            ],",
+					"            \"properties\": {",
+					"                \"url\": {",
+					"                    \"type\": \"string\",",
+					"                    \"minLength\": 28",
+					"                },",
+					"                \"pdf\": {",
+					"                    \"type\": \"string\",",
+					"                    \"minLength\": 28",
+					"                }",
+					"            }",
+					"        },",
+					"        \"policyholder\": {",
+					"            \"type\": \"object\",",
+					"            \"required\": [",
+					"                \"first_name\",",
+					"                \"last_name\",",
+					"                \"email\",",
+					"                \"country\"",
+					"            ],",
+					"            \"properties\": {",
+					"                \"first_name\": {",
+					"                    \"type\": \"string\",",
+					"                    \"minLength\": 1",
+					"                },",
+					"                \"last_name\": {",
+					"                    \"type\": \"string\",",
+					"                    \"minLength\": 1",
+					"                },",
+					"                \"email\": {",
+					"                    \"type\": \"string\",",
+					"                    \"minLength\": 4",
+					"                },",
+					"                \"country\": {",
+					"                    \"type\": \"string\",",
+					"                    \"minLength\": 1",
+					"                }",
+					"            }",
+					"        },",
+					"        \"total_tax\": {",
+					"            \"type\": \"number\",",
+					"            \"minLength\": 1",
+					"        },",
+					"        \"total_tax_formatted\": {",
+					"            \"type\": \"string\",",
+					"            \"minLength\": 2",
+					"        },",
+					"        \"total_premium\": {",
+					"            \"type\": \"number\",",
+					"            \"minLength\": 1",
+					"        },",
+					"        \"total_premium_formatted\": {",
+					"            \"type\": \"string\",",
+					"            \"minLength\": 2",
+					"        },",
+					"    }",
+					"};",
+					"",
+					"const bookingSchemaWithPagination = {",
+					"    \"required\": [",
+					"        \"results0\"",
+					"    ],",
+					"    \"properties\": {",
+					"        \"results\": {",
+					"            \"type\": \"array\",",
+					"            \"items\": bookingSchema",
+					"        }",
+					"    }",
+					"};",
+					"",
+					"const customerDetailsWithoutPagination = {",
+					"    \"type\": \"object\",",
+					"    \"required\": [",
+					"        \"id\",",
+					"        \"email\"",
+					"    ],",
+					"    \"properties\": {",
+					"        \"id\": {",
+					"            \"type\": \"string\",",
+					"            \"minLength\": 36,",
+					"            \"maxLength\": 36,",
+					"        },",
+					"        \"email\": {",
+					"            \"type\": \"string\"",
+					"        },",
+					"        \"first_name\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        },",
+					"        \"last_name\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        },",
+					"        \"contry\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        },",
+					"        \"address1\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        },",
+					"        \"address2\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        },",
+					"        \"city\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        },",
+					"        \"post_code\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        },",
+					"        \"region\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        },",
+					"        \"phone\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        },",
+					"        \"secondary_email\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        },",
+					"        \"birth_date\": {",
+					"            \"type\": [\"null\", \"string\"]",
+					"        }",
+					"    }",
+					"};",
+					"",
+					"const customerDetailsWithPagination = {",
+					"    \"required\": [",
+					"        \"results\"",
+					"    ],",
+					"    \"properties\": {",
+					"        \"results\": {",
+					"            \"type\": \"array\",",
+					"            \"items\": customerDetailsWithoutPagination",
+					"        }",
+					"    }",
+					"};",
+					"",
+					"const paginationSchema = {",
+					"    \"required\": [",
+					"        \"count\",",
+					"        \"next\",",
+					"        \"previous\",",
+					"        \"results\"",
+					"    ],",
+					"    \"properties\": {",
+					"        \"count\": {",
+					"            \"type\": \"number\"",
+					"        },",
+					"        \"next\": {",
+					"            \"type\": [\"null\", \"string\"],",
+					"            \"minLength\": 50,",
+					"        },",
+					"        \"previous\": {",
+					"            \"type\": [\"null\", \"string\"],",
+					"            \"minLength\": 50,",
+					"        },",
+					"        \"results\": {",
+					"            \"type\": \"array\",",
+					"        }",
+					"    }",
+					"};",
+					"",
+					"// set schema vaiables",
+					"pm.environment.set(\"quoteSchema\", quoteSchema);",
+					"pm.environment.set(\"quoteSchemaWithPagination\", quoteSchemaWithPagination);",
+					"pm.environment.set(\"bookingSchema\", bookingSchema);",
+					"pm.environment.set(\"bookingSchemaWithPagination\", bookingSchemaWithPagination);",
+					"pm.environment.set(\"paginationSchema\", paginationSchema);",
+					"pm.environment.set(\"customerDetailsWithPagination\", customerDetailsWithPagination);",
+					"pm.environment.set(\"customerDetailsWithoutPagination\", customerDetailsWithoutPagination);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
